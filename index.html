@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Plant Detection AI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🌿 Plant Health Detector</h2>
+
+<form id="uploadForm">
+
+<label for="file-upload" class="custom-file-upload">
+📷 Upload Leaf Image
+</label>
+
+<input id="file-upload" type="file" name="image" required>
+
+<button type="submit">Detect Plant</button>
+
+</form>
+
+<h3 id="result"></h3>
+
+</div>
+
+<script>
+document.getElementById("uploadForm")
+.addEventListener("submit", async (e) => {
+
+    e.preventDefault();
+
+    let formData = new FormData(e.target);
+
+    let res = await fetch("http://127.0.0.1:5000/predict", {
+        method: "POST",
+        body: formData
+    });
+
+    let data = await res.json();
+
+    document.getElementById("result").innerHTML =
+    `Plant: ${data.plant} 🌿<br>
+     Health: ${data.health}<br>
+     Confidence: ${data.confidence}%`;
+});
+</script>
+
+</body>
+</html>
